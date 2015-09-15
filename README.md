@@ -44,4 +44,6 @@ default to 'tweets'
 
 ## Commands
 ### Elastic Twitter Stream: Start
+Start Twitter Stream to Elasticsearch.
 ### Elastic Twitter Stream: Stop
+Stop Twitter Stream to Elasticsearch.
