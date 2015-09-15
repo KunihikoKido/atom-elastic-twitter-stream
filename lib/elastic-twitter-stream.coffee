@@ -23,13 +23,6 @@ twitterConfig =
     atom.config.get('elastic-twitter-stream.twitterStreamLocations')
   streamLanguage: ->
     atom.config.get('elastic-twitter-stream.twitterStreamLanguage')
-  streamParameters: ->
-    params =
-      language: twitterConfig.streamLanguage()
-      follow: twitterConfig.streamFollow()
-      track: twitterConfig.streamTrack()
-      locations: twitterConfig.streamLocations()
-    return params
   Client: ->
     Twitter(
       consumer_key: twitterConfig.consumerKey()
@@ -46,12 +39,6 @@ elasticConfig =
     atom.config.get('elastic-twitter-stream.elasticsearchIndex')
   type: ->
     atom.config.get('elastic-twitter-stream.elasticsearchType')
-  indexParameters: (tweet) ->
-    params =
-      index: elasticConfig.index()
-      type: elasticConfig.type()
-      body: tweet
-    return params
   Client: ->
     elasticsearch.Client(host: elasticConfig.host())
 
@@ -154,7 +141,13 @@ module.exports = ElasticsearchTwitter =
     elasticClient = new elasticConfig.Client()
     twitterClient = new twitterConfig.Client()
 
-    twitterClient.stream('statuses/filter', twitterConfig.streamParameters(), (stream) ->
+    params =
+      language: twitterConfig.streamLanguage()
+      follow: twitterConfig.streamFollow()
+      track: twitterConfig.streamTrack()
+      locations: twitterConfig.streamLocations()
+
+    twitterClient.stream('statuses/filter', params, (stream) ->
       currentTwitterStream = stream
 
       stream.on('data', (tweet) ->
@@ -162,7 +155,12 @@ module.exports = ElasticsearchTwitter =
 
         loadingView.updateMessage(tweet.text)
 
-        elasticClient.index(elasticConfig.indexParameters(tweet)).catch((error) ->
+        params =
+          index: elasticConfig.index()
+          type: elasticConfig.type()
+          body: tweet
+
+        elasticClient.index(params).catch((error) ->
           destroyTwitterStream()
           notifications.addError("Elasticsearch Error", detail: error)
         )
