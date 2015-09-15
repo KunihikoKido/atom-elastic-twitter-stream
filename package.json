@@ -1,0 +1,25 @@
+{
+  "name": "elastic-twitter-stream",
+  "main": "./lib/elastic-twitter-stream",
+  "version": "0.0.0",
+  "description": "Twitter Stream to Elasticsearch.",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": [
+      "elastic-twitter-stream:start",
+      "elastic-twitter-stream:stop"
+    ]
+  },
+  "repository": "https://github.com/KunihikoKido/atom-elastic-twitter-stream",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+    "twitter": "^1.2.5",
+    "elasticsearch": "^8.0.1",
+    "loophole": "^1.1.0",
+    "atom-space-pen-views": "^2.1.0"
+  }
+}
