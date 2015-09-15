@@ -3,7 +3,10 @@
   "main": "./lib/elastic-twitter-stream",
   "version": "0.1.0",
   "description": "Twitter Stream to Elasticsearch.",
-  "keywords": [],
+  "keywords": [
+    "elasticsearch",
+    "twitter"
+  ],
   "activationCommands": {
     "atom-workspace": [
       "elastic-twitter-stream:start",
