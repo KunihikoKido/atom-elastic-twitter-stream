@@ -41,6 +41,10 @@ default to 'http://localhost:9200'
 default to 'twitter'
 ### Elasticsearch Type
 default to 'tweets'
+### Elasticsearch Bulk Size
+default to 100
+### Elasticsearch Flush Interval
+default to 5000 (5s)
 
 ## Commands
 ### Elastic Twitter Stream: Start

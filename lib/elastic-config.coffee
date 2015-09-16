@@ -8,5 +8,9 @@ module.exports = ElasticConfig =
     atom.config.get('elastic-twitter-stream.elasticsearchIndex')
   type: ->
     atom.config.get('elastic-twitter-stream.elasticsearchType')
+  bulkSize: ->
+    atom.config.get('elastic-twitter-stream.elasticsearchBulkSize')
+  flushInterval: ->
+    atom.config.get('elastic-twitter-stream.elasticsearchFlushInterval')
   Client: ->
     elasticsearch.Client(host: ElasticConfig.host())
