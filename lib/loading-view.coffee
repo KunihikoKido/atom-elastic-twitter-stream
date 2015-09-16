@@ -1,27 +1,29 @@
 {ScrollView} = require 'atom-space-pen-views'
 
-module.exports =
-  class LoadingView extends ScrollView
-    @content: ->
-      @div class: "padded", =>
-        @div class: "inset-panel", =>
-          @div class: "panel-heading", "Elastic Twitter Stream"
-          @div class: "panel-body padded", =>
-            @span class: "loading loading-spinner-small inline-block"
-            @span class: "message", "..."
+class LoadingView extends ScrollView
+  @content: ->
+    @div class: "padded", =>
+      @div class: "inset-panel", =>
+        @div class: "panel-heading", "Elastic Twitter Stream"
+        @div class: "panel-body padded", =>
+          @span class: "loading loading-spinner-small inline-block"
+          @span class: "message", "..."
 
-    initialize: ->
-      super
-      @panel ?= atom.workspace.addBottomPanel(item: this)
+  initialize: ->
+    super
+    # @panel ?= atom.workspace.addBottomPanel(item: this)
 
-    updateMessage: (message) ->
-      @find(".message").text(message)
+  updateMessage: (message) ->
+    @panel ?= atom.workspace.addBottomPanel(item: this)
+    @find(".message").text(message)
 
+  finish: ->
+    setTimeout =>
+      @destroy()
+    , 1 * 1000
 
-    finish: ->
-      setTimeout =>
-        @destroy()
-      , 1 * 1000
+  destroy: ->
+    @panel?.destroy()
+    @panel = null
 
-    destroy: ->
-      @panel?.destroy()
+module.exports = LoadingView = new LoadingView()

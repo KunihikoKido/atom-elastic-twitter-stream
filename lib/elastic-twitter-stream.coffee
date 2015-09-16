@@ -1,70 +1,10 @@
 {CompositeDisposable} = require 'atom'
-{allowUnsafeNewFunction} = require 'loophole'
-elasticsearch = allowUnsafeNewFunction -> require 'elasticsearch'
-Twitter = require 'twitter'
-LoadingView = require './loading-view'
-
-twitterConfig =
-  consumerKey: ->
-    atom.config.get('elastic-twitter-stream.twitterConsumerKey')
-  consumerSecret: ->
-    atom.config.get('elastic-twitter-stream.twitterConsumerSecret')
-  accessTokenKey: ->
-    atom.config.get('elastic-twitter-stream.twitterAccessTokenKey')
-  accessTokenSecret: ->
-    atom.config.get('elastic-twitter-stream.twitterAccessTokenSecret')
-  ignoreRetweet: ->
-    atom.config.get('elastic-twitter-stream.twitterIgnoreRetweet')
-  streamFollow: ->
-    atom.config.get('elastic-twitter-stream.twitterStreamFollow')
-  streamTrack: ->
-    atom.config.get('elastic-twitter-stream.twitterStreamTrack')
-  streamLocations: ->
-    atom.config.get('elastic-twitter-stream.twitterStreamLocations')
-  streamLanguage: ->
-    atom.config.get('elastic-twitter-stream.twitterStreamLanguage')
-  Client: ->
-    Twitter(
-      consumer_key: twitterConfig.consumerKey()
-      consumer_secret: twitterConfig.consumerSecret()
-      access_token_key: twitterConfig.accessTokenKey()
-      access_token_secret: twitterConfig.accessTokenSecret()
-    )
-
-
-elasticConfig =
-  host: ->
-    atom.config.get('elastic-twitter-stream.elasticsearchHost')
-  index: ->
-    atom.config.get('elastic-twitter-stream.elasticsearchIndex')
-  type: ->
-    atom.config.get('elastic-twitter-stream.elasticsearchType')
-  Client: ->
-    elasticsearch.Client(host: elasticConfig.host())
-
-
-notifications =
-  packageName: 'Elastic Twitter Stream'
-  addInfo: (message, {detail}={}) ->
-    atom.notifications?.addInfo("#{@packageName}: #{message}", detail: detail)
-  addError: (message, {detail}={}) ->
-    atom.notifications.addError(
-      "#{@packageName}: #{message}", detail: detail, dismissable: true)
-
-
-currentTwitterStream = null
-loadingView = null
-
-destroyTwitterStream = ->
-  currentTwitterStream?.destroy()
-  currentTwitterStream = null
-  loadingView?.finish()
-  loadingView = null
-
-ignoreTweet = (tweet) ->
-  if tweet.retweeted_status and twitterConfig.ignoreRetweet()
-    return true
-  return false
+TweetStatus = require './twitter-status'
+twitterConfig = require './twitter-config'
+elasticConfig = require './elastic-config'
+notifications = require './notifications'
+twitterStream = require './twitter-stream'
+loadingView = require './loading-view'
 
 
 module.exports = ElasticsearchTwitter =
@@ -135,9 +75,8 @@ module.exports = ElasticsearchTwitter =
   serialize: ->
 
   startCommand: ->
-    return if currentTwitterStream
+    return if twitterStream.isActive()
 
-    loadingView = new LoadingView()
     elasticClient = new elasticConfig.Client()
     twitterClient = new twitterConfig.Client()
 
@@ -148,29 +87,32 @@ module.exports = ElasticsearchTwitter =
       locations: twitterConfig.streamLocations()
 
     twitterClient.stream('statuses/filter', params, (stream) ->
-      currentTwitterStream = stream
+      twitterStream.update(stream)
 
       stream.on('data', (tweet) ->
-        return if ignoreTweet(tweet)
+        tweetStatus = new TweetStatus(tweet)
 
-        loadingView.updateMessage(tweet.text)
+        return if tweetStatus.isRetweeted() and twitterConfig.ignoreRetweet()
+
+        loadingView.updateMessage(tweetStatus.getText())
 
         params =
           index: elasticConfig.index()
           type: elasticConfig.type()
-          body: tweet
+          body: tweetStatus.getRaw()
 
         elasticClient.index(params).catch((error) ->
-          destroyTwitterStream()
+          twitterStream.destroy()
+          loadingView.finish()
           notifications.addError("Elasticsearch Error", detail: error)
         )
-      )
-
-      stream.on('error', (error) ->
-        destroyTwitterStream()
+      ).on('error', (error) ->
+        twitterStream.destroy()
+        loadingView.finish()
         notifications.addError("Twitter Stream Error", detail: error)
       )
     )
 
   stopCommand: ->
-    destroyTwitterStream()
+    twitterStream.destroy()
+    loadingView.finish()
