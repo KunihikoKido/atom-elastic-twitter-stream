@@ -36,6 +36,7 @@ module.exports = ElasticsearchTwitter =
     twitterConsumerKey:
       type: 'string'
       default: ''
+      title: 'Twitter - Consumer key'
       description: """
         You need to get an OAuth token in order to use elastic-twitter-stream package.
         Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
@@ -43,6 +44,7 @@ module.exports = ElasticsearchTwitter =
     twitterConsumerSecret:
       type: 'string'
       default: ''
+      title: 'Twitter - Consumer secret'
       description: """
         You need to get an OAuth token in order to use elastic-twitter-stream package.
         Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
@@ -50,6 +52,7 @@ module.exports = ElasticsearchTwitter =
     twitterAccessTokenKey:
       type: 'string'
       default: ''
+      title: 'Twitter - Access token key'
       description: """
         You need to get an OAuth token in order to use elastic-twitter-stream package.
         Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
@@ -57,6 +60,7 @@ module.exports = ElasticsearchTwitter =
     twitterAccessTokenSecret:
       type: 'string'
       default: ''
+      title: 'Twitter - Access token secret'
       description: """
         You need to get an OAuth token in order to use elastic-twitter-stream package.
         Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
@@ -64,9 +68,11 @@ module.exports = ElasticsearchTwitter =
     twitterIgnoreRetweet:
       type: 'boolean'
       default: false
+      title: 'Twitter - Ignore retweet'
     twitterStreamFollow:
       type: 'string'
       default: ''
+      title: 'Twitter - Filter stream follow option'
       description: """
         A comma separated list of user IDs, indicating the users to return statuses for in the stream.
         See [follow](https://dev.twitter.com/streaming/overview/request-parameters#follow) for more information.
@@ -74,6 +80,7 @@ module.exports = ElasticsearchTwitter =
     twitterStreamTrack:
       type: 'string'
       default: 'twitter'
+      title: 'Twitter - Filter stream track option'
       description: """
         Keywords to track. Phrases of keywords are specified by a comma-separated list.
         See [track](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information.
@@ -81,6 +88,7 @@ module.exports = ElasticsearchTwitter =
     twitterStreamLocations:
       type: 'string'
       default: ''
+      title: 'Twitter - Filter stream locations option'
       description: """
         Specifies a set of bounding boxes to track.
         See [locations](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information.
@@ -88,6 +96,7 @@ module.exports = ElasticsearchTwitter =
     twitterStreamLanguage:
       type: 'string'
       default: ''
+      title: 'Twitter - Filter stream language option'
       description: """
         Setting this parameter to a comma-separated list of BCP 47 language identifiers.
         See [language](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information.
@@ -130,6 +139,7 @@ module.exports = ElasticsearchTwitter =
         'withheld_in_countries',
         'withheld_scope'
       ]
+      title: 'Twitter - Include fields'
       description: """
         A comma-separated list of include fields.
         See [Tweets field guide](https://dev.twitter.com/overview/api/tweets) more information.
@@ -137,18 +147,23 @@ module.exports = ElasticsearchTwitter =
     elasticsearchHost:
       type: 'string'
       default: 'http://localhost:9200'
+      title: 'Elasticsearch - Host'
     elasticsearchIndex:
       type: 'string'
       default: 'twitter'
+      title: 'Elasticsearch - Index'
     elasticsearchType:
       type: 'string'
       default: 'tweets'
+      title: 'Elasticsearch - Type'
     elasticsearchBulkSize:
       type: 'integer'
       default: 100
+      title: 'Elasticsearch - Bulk size'
     elasticsearchFlushInterval:
       type: 'integer'
       default: 5
+      title: 'Elasticsearch - Flush interval'
       description: 'The flush interval in seconds'
 
   activate: (state) ->

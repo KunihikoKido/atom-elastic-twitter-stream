@@ -7,46 +7,46 @@ Twitter Stream to Elasticsearch.
 You need to get an OAuth token in order to use elastic-twitter-stream package. Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom),
 
 ## Settings for Twitter Stream API
-### Twitter Consumer Key
+### Consumer key
 Your Consumer Key. default to ''
 
-### Twitter Consumer Secret
+### Consumer secret
 Your Consumer Secret. default to ''
 
-### Twitter Access Token Key
+### Access token key
 Your Access Token Key. default to ''
 
-### Twitter Access Token Secret
+### Access token secret
 Your Access Token Secret. default to ''
 
-### Twitter Ignore Retweet
+### Ignore retweet
 If you don't want to index retweets, just set this option to `true`. default to `false`
 
-### Twitter Include Fields
+### Include fields
 A comma-separated list of include fields. See [Tweets field guide](https://dev.twitter.com/overview/api/tweets). default to all fields included.
 
-### Twitter Stream Follow
+### Filter stream follow option
 A comma separated list of user IDs, indicating the users to return statuses for in the stream. See [follow](https://dev.twitter.com/streaming/overview/request-parameters#follow) for more information. default to ''
 
-### Twitter Stream Locations
+### Filter stream locations option
 Specifies a set of bounding boxes to track. See [locations](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information. default to ''
 
-### Twitter Stream Track
+### Filter stream track option
 Keywords to track. Phrases of keywords are specified by a comma-separated list. See [track](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information. default to 'twitter'
 
-### Twitter Stream Language
+### Filter stream language option
 Setting this parameter to a comma-separated list of BCP 47 language identifiers. See [language](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information. default to ''
 
 ## Settings for Elasticsearch
-### Elasticsearch Host
+### Host
 default to 'http://localhost:9200'
-### Elasticsearch Index
+### Index
 default to 'twitter'
-### Elasticsearch Type
+### Type
 default to 'tweets'
-### Elasticsearch Bulk Size
+### Bulk size
 default to 100
-### Elasticsearch Flush Interval
+### Flush interval
 default to 5 (5s)
 
 ## Commands
