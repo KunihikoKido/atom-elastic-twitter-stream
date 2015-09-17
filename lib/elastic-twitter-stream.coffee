@@ -36,15 +36,31 @@ module.exports = ElasticsearchTwitter =
     twitterConsumerKey:
       type: 'string'
       default: ''
+      description: """
+        You need to get an OAuth token in order to use elastic-twitter-stream package.
+        Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
+        """
     twitterConsumerSecret:
       type: 'string'
       default: ''
+      description: """
+        You need to get an OAuth token in order to use elastic-twitter-stream package.
+        Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
+        """
     twitterAccessTokenKey:
       type: 'string'
       default: ''
+      description: """
+        You need to get an OAuth token in order to use elastic-twitter-stream package.
+        Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
+        """
     twitterAccessTokenSecret:
       type: 'string'
       default: ''
+      description: """
+        You need to get an OAuth token in order to use elastic-twitter-stream package.
+        Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom)
+        """
     twitterIgnoreRetweet:
       type: 'boolean'
       default: false
