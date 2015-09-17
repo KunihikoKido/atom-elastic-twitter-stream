@@ -37,4 +37,4 @@ module.exports = TwitterStream =
   setInterval: (@callback, options) ->
     {flushInterval, bulkSize} = options
     @bulkSize = bulkSize
-    @intervalId = setInterval(callback, flushInterval)
+    @intervalId = setInterval(callback, flushInterval * 1000)

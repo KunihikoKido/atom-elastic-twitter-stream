@@ -132,7 +132,8 @@ module.exports = ElasticsearchTwitter =
       default: 100
     elasticsearchFlushInterval:
       type: 'integer'
-      default: 5 * 1000
+      default: 5
+      description: 'The flush interval in seconds'
 
   activate: (state) ->
     @subscriptions = new CompositeDisposable

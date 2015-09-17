@@ -47,7 +47,7 @@ default to 'tweets'
 ### Elasticsearch Bulk Size
 default to 100
 ### Elasticsearch Flush Interval
-default to 5000 (5s)
+default to 5 (5s)
 
 ## Commands
 ### Elastic Twitter Stream: Start
