@@ -20,6 +20,7 @@ bulkIndex = ->
     action = index: {}
     action.index._id = item.id
     params.body.push(action, item)
+  twitterStream.resetItems()
 
   client.bulk(params).catch((error) ->
     twitterStream.destroy()
@@ -27,7 +28,6 @@ bulkIndex = ->
     notifications.addError("Elasticsearch Error", detail: error)
   )
 
-  twitterStream.resetItems()
 
 module.exports = ElasticsearchTwitter =
   subscriptions: null
