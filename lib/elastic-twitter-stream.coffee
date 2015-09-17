@@ -17,8 +17,9 @@ bulkIndex = ->
     body: []
 
   for item in twitterStream.getItems()
-    params.body.push(index:{})
-    params.body.push(item)
+    action = index: {}
+    action.index._id = item.id
+    params.body.push(action, item)
 
   client.bulk(params).catch((error) ->
     twitterStream.destroy()
@@ -75,6 +76,48 @@ module.exports = ElasticsearchTwitter =
         A comma-separated list of BCP 47 language identifiers.\n
         See https://dev.twitter.com/streaming/overview/request-parameters#language
         """
+    twitterIncludeFields:
+      type: 'array'
+      default: [
+        'annotations',
+        'contributors',
+        'coordinates',
+        'created_at',
+        'current_user_retweet',
+        'entities',
+        'favorite_count',
+        'favorited',
+        'filter_level',
+        'geo',
+        'id',
+        'id_str',
+        'in_reply_to_screen_name',
+        'in_reply_to_status_id',
+        'in_reply_to_status_id_str',
+        'in_reply_to_user_id',
+        'in_reply_to_user_id_str',
+        'lang',
+        'place',
+        'possibly_sensitive',
+        'quoted_status_id',
+        'quoted_status_id_str',
+        'quoted_status',
+        'scopes',
+        'retweet_count',
+        'retweeted',
+        'retweeted_status',
+        'source',
+        'text',
+        'truncated',
+        'user',
+        'withheld_copyright',
+        'withheld_in_countries',
+        'withheld_scope'
+      ]
+      description: """
+        A comma-separated list of include fields.\n
+        See https://dev.twitter.com/overview/api/tweets
+        """
     elasticsearchHost:
       type: 'string'
       default: 'http://localhost:9200'
@@ -121,16 +164,18 @@ module.exports = ElasticsearchTwitter =
       locations: twitterConfig.streamLocations()
 
     client.stream('statuses/filter', params, (stream) ->
+      twitterStream.updateCurrentStream(stream)
+
       stream.on('data', (tweet) ->
-        options = ignoreRetweet: twitterConfig.ignoreRetweet()
+        options =
+          ignoreRetweet: twitterConfig.ignoreRetweet()
+          includeFields: twitterConfig.includeFields()
         tweetStatus = new TweetStatus(tweet, options)
 
         return if tweetStatus.isIgnored()
 
         loadingView.updateMessage(tweetStatus.getText())
-        twitterStream.addItem(tweetStatus.getRaw())
-        twitterStream.updateCurrentStream(stream)
-
+        twitterStream.addItem(tweetStatus.getItem())
       ).on('error', (error) ->
         twitterStream.destroy()
         loadingView.finish()

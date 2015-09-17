@@ -22,6 +22,9 @@ Your Access Token Secret. default to ''
 ### Twitter Ignore Retweet
 If you don't want to index retweets, just set this option to `true`. default to `false`
 
+### Twitter Include Fields
+A comma-separated list of include fields. See [Tweets field guide](https://dev.twitter.com/overview/api/tweets). default to all fields included.
+
 ### Twitter Stream Follow
 A comma separated list of user IDs, indicating the users to return statuses for in the stream. See [follow](https://dev.twitter.com/streaming/overview/request-parameters#follow) for more information. default to ''
 

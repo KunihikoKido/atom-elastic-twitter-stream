@@ -11,6 +11,8 @@ module.exports = TwitterConfig =
     atom.config.get('elastic-twitter-stream.twitterAccessTokenSecret')
   ignoreRetweet: ->
     atom.config.get('elastic-twitter-stream.twitterIgnoreRetweet')
+  includeFields: ->
+    atom.config.get('elastic-twitter-stream.twitterIncludeFields')
   streamFollow: ->
     atom.config.get('elastic-twitter-stream.twitterStreamFollow')
   streamTrack: ->
