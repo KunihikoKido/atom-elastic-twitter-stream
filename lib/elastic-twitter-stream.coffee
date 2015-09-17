@@ -52,29 +52,29 @@ module.exports = ElasticsearchTwitter =
       type: 'string'
       default: ''
       description: """
-        A comma-separated list of user IDs.\n
-        See https://dev.twitter.com/streaming/overview/request-parameters#follow
+        A comma separated list of user IDs, indicating the users to return statuses for in the stream.
+        See [follow](https://dev.twitter.com/streaming/overview/request-parameters#follow) for more information.
         """
     twitterStreamTrack:
       type: 'string'
       default: 'twitter'
       description: """
-        A comma-separated list of phrases.\n
-        See https://dev.twitter.com/streaming/overview/request-parameters#track
+        Keywords to track. Phrases of keywords are specified by a comma-separated list.
+        See [track](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information.
         """
     twitterStreamLocations:
       type: 'string'
       default: ''
       description: """
-        A comma-separated list of longitude,latitude pairs.\n
-        See https://dev.twitter.com/streaming/overview/request-parameters#locations
+        Specifies a set of bounding boxes to track.
+        See [locations](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information.
         """
     twitterStreamLanguage:
       type: 'string'
       default: ''
       description: """
-        A comma-separated list of BCP 47 language identifiers.\n
-        See https://dev.twitter.com/streaming/overview/request-parameters#language
+        Setting this parameter to a comma-separated list of BCP 47 language identifiers.
+        See [language](https://dev.twitter.com/streaming/overview/request-parameters#track) for more information.
         """
     twitterIncludeFields:
       type: 'array'
@@ -115,8 +115,8 @@ module.exports = ElasticsearchTwitter =
         'withheld_scope'
       ]
       description: """
-        A comma-separated list of include fields.\n
-        See https://dev.twitter.com/overview/api/tweets
+        A comma-separated list of include fields.
+        See [Tweets field guide](https://dev.twitter.com/overview/api/tweets) more information.
         """
     elasticsearchHost:
       type: 'string'
