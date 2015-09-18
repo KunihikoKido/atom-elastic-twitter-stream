@@ -2,6 +2,7 @@
 
 Twitter Stream to Elasticsearch.
 
+![overview](https://raw.githubusercontent.com/KunihikoKido/atom-elastic-twitter-stream/master/screenshots/overview.gif)
 
 ## Prerequisites
 You need to get an OAuth token in order to use elastic-twitter-stream package. Please follow  [Twitter documentation](https://dev.twitter.com/docs/auth/tokens-devtwittercom),
