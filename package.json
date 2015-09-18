@@ -1,7 +1,7 @@
 {
   "name": "elastic-twitter-stream",
   "main": "./lib/elastic-twitter-stream",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Twitter Stream to Elasticsearch.",
   "keywords": [
     "elasticsearch",
