@@ -21,6 +21,8 @@ module.exports = TwitterConfig =
     atom.config.get('elastic-twitter-stream.twitterStreamLocations')
   streamLanguage: ->
     atom.config.get('elastic-twitter-stream.twitterStreamLanguage')
+  timeout: ->
+    atom.config.get('elastic-twitter-stream.twitterTimeout')
   Client: ->
     Twitter(
       consumer_key: TwitterConfig.consumerKey()

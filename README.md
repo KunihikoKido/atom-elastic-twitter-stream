@@ -26,6 +26,10 @@ If you don't want to index retweets, just set this option to `true`. default to 
 ### Include fields
 A comma-separated list of include fields. See [Tweets field guide](https://dev.twitter.com/overview/api/tweets). default to all fields included.
 
+### Timeout
+If you automatically to stop the stream of Twitter , you set the time-out .
+* The flush interval in seconds
+
 ### Filter stream follow option
 A comma separated list of user IDs, indicating the users to return statuses for in the stream. See [follow](https://dev.twitter.com/streaming/overview/request-parameters#follow) for more information. default to ''
 
@@ -49,6 +53,7 @@ default to 'tweets'
 default to 100
 ### Flush interval
 default to 5 (5s)
+* The flush interval in seconds
 
 ## Commands
 ### Elastic Twitter Stream: Start

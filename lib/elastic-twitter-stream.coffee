@@ -6,29 +6,6 @@ notifications = require './notifications'
 twitterStream = require './twitter-stream'
 loadingView = require './loading-view'
 
-bulkIndex = ->
-  return if twitterStream.isEmptyItems()
-
-  client = new elasticConfig.Client()
-
-  params =
-    index: elasticConfig.index()
-    type: elasticConfig.type()
-    body: []
-
-  for item in twitterStream.getItems()
-    action = index: {}
-    action.index._id = item.id
-    params.body.push(action, item)
-  twitterStream.resetItems()
-
-  client.bulk(params).catch((error) ->
-    twitterStream.destroy()
-    loadingView.finish()
-    notifications.addError("Elasticsearch Error", detail: error)
-  )
-
-
 module.exports = ElasticsearchTwitter =
   subscriptions: null
 
@@ -144,6 +121,14 @@ module.exports = ElasticsearchTwitter =
         A comma-separated list of include fields.
         See [Tweets field guide](https://dev.twitter.com/overview/api/tweets) more information.
         """
+    twitterTimeout:
+      type: 'integer'
+      default: 0
+      title: 'Twitter - Timeout'
+      description: """
+        If you automatically to stop the stream of Twitter , you set the time-out .
+        * The timeout in seconds
+        """
     elasticsearchHost:
       type: 'string'
       default: 'http://localhost:9200'
@@ -182,8 +167,11 @@ module.exports = ElasticsearchTwitter =
     options =
       flushInterval: elasticConfig.flushInterval()
       bulkSize: elasticConfig.bulkSize()
-
     twitterStream.setInterval(bulkIndex, options)
+
+    options =
+      timeout: twitterConfig.timeout()
+    twitterStream.setTimeout(stopTwitterStream, options)
 
     loadingView.updateMessage("Start twitter stream to elasticsearch ...")
 
@@ -209,12 +197,37 @@ module.exports = ElasticsearchTwitter =
         loadingView.updateMessage(tweetStatus.getText())
         twitterStream.addItem(tweetStatus.getItem())
       ).on('error', (error) ->
-        twitterStream.destroy()
-        loadingView.finish()
+        stopTwitterStream()
         notifications.addError("Twitter Stream Error", detail: error)
       )
     )
 
   stopCommand: ->
-    twitterStream.destroy()
-    loadingView.finish()
+    stopTwitterStream()
+
+
+stopTwitterStream = ->
+  twitterStream.destroy()
+  loadingView.finish()
+
+
+bulkIndex = ->
+  return if twitterStream.isEmptyItems()
+
+  client = new elasticConfig.Client()
+
+  params =
+    index: elasticConfig.index()
+    type: elasticConfig.type()
+    body: []
+
+  for item in twitterStream.getItems()
+    action = index: {}
+    action.index._id = item.id
+    params.body.push(action, item)
+  twitterStream.resetItems()
+
+  client.bulk(params).catch((error) ->
+    stopTwitterStream()
+    notifications.addError("Elasticsearch Error", detail: error)
+  )
